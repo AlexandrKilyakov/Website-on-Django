@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/testing/style.css">
+	<title>Начальная форма</title>
+</head>
+<body>
+{% block content %}
+	<div class="back">
+		<form method="POST" action="{% url 'start' %}">
+		 	{% csrf_token %}
+		 	<input type="text"  name="job" id="job" class="hide">
+		 	<input type="text"  name="gost"  id="gost" class="hide">
+			<div class="select-box"><!-- Професия -->
+
+				<label for="select-box1" class="label select-box1"><span class="label-desc" id="label-text-job">Професия</span></label>
+				<select id="select-box1" class="select">
+					{% for el in job %}
+						<option value="{{el.name}}">{{el.name}}</option>
+					{% endfor %}
+				</select>
+
+			</div>
+
+			<div class="select-box"><!-- Профстандарт -->
+
+				<label for="select-box2" class="label select-box1"><span class="label-desc" id="label-text-gost">Профстандарт</span></label>
+				<select id="select-box2" class="select">
+					{% for el in gost %}
+						<option value="{{el.gost}}">{{el.gost}}</option>
+					{% endfor %}
+				</select>
+
+			</div>
+
+			<button class="select-box-btn button" id="btn">ПРИМЕНИТЬ</button>
+
+		</form>  
+
+		<div class="container">
+			{% if glossary %}
+
+			<table class="table_dark">
+				<tr>
+					<th>Трудовая функция</th>
+					<th>Оценка</th>
+				</tr>
+					{% for key, values in glossary.items %}
+						<tr>
+							<td class="ptd">{{values.name}}</td>
+							<td class="absolute">
+								{% if values.knows == "" %}
+									<form action="{% url 'test' %}" method="POST">
+										{% csrf_token %}
+										<input name="code_profession" type="text" value="{{values.code_profession}}" class="hide">
+										<input name="code_gost" type="text" value="{{values.code_gost}}" class="hide">
+										<input name="name" type="text" value="{{values.name}}" class="hide">
+										<input name="know" type="text" value="Знания" class="hide">
+										<input name="skills" type="text" value="Умения" class="hide">
+										<input name="jobTEST" type="text" value="{{jobTEST}}" class="hide">
+										<input name="gostTEST" type="text" value="{{gostTEST}}" class="hide">
+										<button type="submit" class="start-btn">НАЧАТЬ</button>
+									</form>
+								{% else %}
+									<div id="span">Пройдено</div>
+								{% endif %}
+							</td>
+						</tr>
+				{% endfor %}
+			</table>
+
+			{% endif %}
+
+
+			{% if lab %}
+
+			<table class="table_dark">
+				<tr>
+					<th>Трудовая функция</th>
+					<th>Оценка</th>
+				</tr>
+					{% for values in lab %}
+						<tr>
+							<td class="ptd">{{values.name}}</td>
+							<td class="absolute">
+								<form action="{% url 'test' %}" method="POST">
+									{% csrf_token %}
+									<input name="code_profession" type="text" value="{{values.code_profession}}" class="hide">
+									<input name="code_gost" type="text" value="{{values.code_gost}}" class="hide">
+									<input name="name" type="text" value="{{values.name}}" class="hide">
+									<input name="know" type="text" value="Знания" class="hide">
+									<input name="skills" type="text" value="Умения" class="hide">
+									<input name="jobTEST" type="text" value="{{jobTEST}}" class="hide">
+									<input name="gostTEST" type="text" value="{{gostTEST}}" class="hide">
+									<button type="submit" class="start-btn">НАЧАТЬ</button>
+								</form>
+							</td>
+						</tr>
+				{% endfor %}
+			</table>
+
+			{% endif %}
+		</div>
+
+	</div>
+
+{% endblock %}
+
+	<script>
+		/*-------GLOBAL VAR-------*/
+		let jobTEXT = "";
+
+		/*-------PUBLIC VAR-------*/
+		let job = document.querySelector('#select-box1');
+		let gost = document.querySelector('#select-box2');
+		let label_job = document.querySelector('#label-text-job');
+		let label_gost = document.querySelector('#label-text-gost');
+		
+		job.onchange = () => { 
+			temp = document.querySelector("#select-box1").value;
+			jobTEXT = temp;
+
+			if(temp.length < 28)
+			{
+				label_job.textContent  = temp;
+			}
+			else
+			{
+				var out = '';
+				for(var i = 0; i < 28; i++)
+				{
+					out += temp[i];
+				}
+				label_job.textContent  = `${out}...`;
+			}
+		}
+
+		gost.onchange = () => { label_gost.textContent  = document.querySelector("#select-box2").value; }
+
+		document.getElementById("btn").onclick = save;
+
+		function save()
+		{
+			if(label_job.textContent != "Професия" && label_gost.textContent != "Профстандарт")
+			{
+				document.querySelector('#job').value = jobTEXT;
+				document.querySelector('#gost').value = label_gost.textContent;
+			}
+			else
+			{
+				alert("Заполните фильтры!")
+			}
+		}
+
+		/*--------COOKIE---------*/
+		if (navigator.cookieEnabled === false)
+		{
+			alert("Cookies отключены!");
+		}
+	</script>
+	
+</body>
+</html>

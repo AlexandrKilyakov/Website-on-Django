@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/static/login/css/main.css">
+	<link rel="stylesheet" href="/static/log_files/css/style.css">
+	<title>Загрузка файлов</title>
+</head>
+{% block content %}
+<body>
+	<div class="tool_bar">
+		<a href="" class="link_logo" id="main_logo"><img id="logo" src="/static/login/art/logo.png"></a>
+		<div class="category-wrap">
+			<ul>
+				<li><a href="{{url_log}}" id="To_come_in" class="active">Добавить данные</a></li>
+				<li><a href="{{url_admin}}" class="category-wrap_link">Открыть админ. панель</a></li>
+				<li><a href="{{url_statistic}}" class="category-wrap_link">Открыть статистику</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="back">	
+		<div class="form">
+
+			<div class="select-box" id="labelGOST"><!-- ГОСТ -->
+
+				<label for="select-box2" class="label"><span class="label-desc" id="label-text-gost">Профстандарт</span></label>
+				<select id="select-box2" class="select">
+					{% for el in gost %}
+						<option value="{{el.gost}}">{{el.gost}}</option>
+					{% endfor %}
+				</select>
+
+			</div>
+			<input class="hide" type="text" id="textGOST" placeholder="09.02.07" >
+			<button class="btn" id="addGOST">Добавить Профстандарт</button>
+			<button class="btn hide" id="backGOST">Выбрать Профстандарт</button>
+		</div>
+
+
+		<div id="drop-area">
+			<form id="upload-container" action="{% url 'download' %}" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<img id="upload-image" src="/static/log_files/art/drqgcsoh1mosho2swyk3kk_mtwi.png">
+				<div>
+					<input id="text" type="text" name="text" style="display: none;">
+					<input id="file-input" type="file" name="file" multiple>
+					<label for="file-input">Выберите файл</label>
+					<span>или перетащите его сюда</span>
+				</div>
+				<button type="submit" class="hide" id="btn" class="top">отправить</button>
+			</form>
+		</div>
+	</div>
+
+	<script src="https://unpkg.com/imask"></script><!-- МАСКА -->
+	<script type="text/javascript">
+		var element = document.getElementById('textGOST');
+		var maskOptions = {
+			mask: '00.00.00'
+		};
+		var mask = IMask(element, maskOptions);
+	</script><!-- МАСКА -->
+
+	<script type="text/javascript">		
+		let jobText = "", nameText = "", skilsText = "", knowText = "", gost, level = "";
+
+		let xmlContent = "";
+		let btn = document.getElementById("btn");
+
+		let dropArea = document.getElementById('drop-area'); ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+			dropArea.addEventListener(eventName, preventDefaults, false);
+		}); ['dragenter', 'dragover'].forEach(eventName => {
+			dropArea.addEventListener(eventName, highlight, false);
+		}); ['dragleave', 'drop'].forEach(eventName => {
+			dropArea.addEventListener(eventName, unhighlight, false);
+		});
+
+		function highlight(e) { dropArea.classList.add('highlight')	}
+
+		function unhighlight(e) { dropArea.classList.remove('highlight') }
+
+		function preventDefaults (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+
+		dropArea.addEventListener('drop', handleDrop, false);
+
+		function handleDrop(e) {
+			let dt = e.dataTransfer;
+			let filesTemp = dt.files;
+
+			dropUploadFile(filesTemp);
+		}
+
+		// ГОСТ listbox
+		document.querySelector('#select-box2').onchange = () => { 
+			document.querySelector('#label-text-gost').textContent  = document.querySelector("#select-box2").value; 
+			gost = document.querySelector("#select-box2").value;
+		}
+
+		// Кнопка "Добавить ГОСТ"
+		document.getElementById("addGOST").onclick = () => {
+			document.getElementById("textGOST").classList.remove("hide");
+			document.getElementById("labelGOST").classList.add("hide");
+			document.getElementById("labelGOST").classList.remove("select-box");
+			document.getElementById("backGOST").classList.remove("hide");
+			document.getElementById("addGOST").classList.add("hide");
+		};
+
+		// Кнопка "Выбрать ГОСТ"
+		document.getElementById("backGOST").onclick = () => {
+			document.getElementById("textGOST").classList.add("hide");
+			document.getElementById("labelGOST").classList.remove("hide");
+			document.getElementById("labelGOST").classList.add("select-box");
+			document.getElementById("backGOST").classList.add("hide");
+			document.getElementById("addGOST").classList.remove("hide");
+		};
+
+		document.getElementById("file-input").onchange = uploadFile;
+
+		function uploadFile(element)
+		{
+			let files = element.target.files;
+
+			xmlContent = "";
+
+			for (var i = 0; i < files.length; ++i)
+			{
+				var file = files[i];
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					xmlContent += e.target.result;
+					btn.classList.remove("hide");
+				};
+
+				reader.readAsText(file);
+			}
+			if(files[0].name.slice(-3) != "xml")
+			{
+				alert("Из этого файла не достать нужные данные.");
+				location.reload();
+			}
+			
+			element.target.value = '';
+		}
+
+		function dropUploadFile(elements)
+		{
+			let files = elements;
+
+			xmlContent = "";
+
+			for (var i = 0; i < files.length; ++i)
+			{
+				var file = files[i];
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					xmlContent += e.target.result;
+					btn.classList.remove("hide");
+				};
+
+				reader.readAsText(file);
+			}
+			elements = '';
+		}
+
+		document.getElementById("btn").onclick = function save(e)
+		{
+			if((document.getElementById("label-text-gost").textContent != "Профстандарт" && !document.getElementById("labelGOST").classList.contains("hide")) || (document.getElementById("textGOST").value != "" && !document.getElementById("textGOST").classList.contains("hide") && document.getElementById("textGOST").value.length == 8))
+			{
+				try
+				{
+					let parser = new DOMParser();
+					let xmlDOM = parser.parseFromString(xmlContent, 'application/xml');
+
+					let NameProfessionalStandart = xmlDOM.querySelectorAll('NameProfessionalStandart');
+					let NecessaryKnowledge = xmlDOM.getElementsByTagName('NecessaryKnowledges');
+					let RequiredSkill = xmlDOM.getElementsByTagName('RequiredSkills');
+					let SubQualification = xmlDOM.querySelectorAll('SubQualification');
+					let NameTF = xmlDOM.querySelectorAll('NameTF');
+
+					SubQualification.forEach(SubQualificationNode => {
+							level += SubQualificationNode.nodeValue || SubQualificationNode.textContent || SubQualificationNode.text || SubQualificationNode.innerText || SubQualificationNode.value || SubQualificationNode.innerHTML;
+							level += "|";
+					});
+
+					NameProfessionalStandart.forEach(NameProfessionalStandartNode => {
+							jobText += NameProfessionalStandartNode.nodeValue || NameProfessionalStandartNode.textContent || NameProfessionalStandartNode.text || NameProfessionalStandartNode.innerText || NameProfessionalStandartNode.value || NameProfessionalStandartNode.innerHTML;
+					});
+
+					NameTF.forEach(NameTFNode => {
+							nameText += NameTFNode.nodeValue || NameTFNode.textContent || NameTFNode.text || NameTFNode.innerText || NameTFNode.value || NameTFNode.innerHTML;
+							nameText += "|";
+					});
+
+					for(var i = 0; i < RequiredSkill.length; i++)
+					{
+						for(var j = 0; j < RequiredSkill[i].children.length; j++)
+						{
+							skilsText += RequiredSkill[i].children[j].nodeValue || RequiredSkill[i].children[j].textContent || RequiredSkill[i].children[j].text || RequiredSkill[i].children[j].innerText || RequiredSkill[i].children[j].value || RequiredSkill[i].children[j].innerHTML;
+							skilsText += "|";
+						}
+						skilsText = skilsText.slice(0, -1)
+						skilsText += "+-+";
+					}
+
+					for(var i = 0; i < NecessaryKnowledge.length; i++)
+					{
+						for(var j = 0; j < NecessaryKnowledge[i].children.length; j++)
+						{
+							knowText += NecessaryKnowledge[i].children[j].nodeValue || NecessaryKnowledge[i].children[j].textContent || NecessaryKnowledge[i].children[j].text || NecessaryKnowledge[i].children[j].innerText || NecessaryKnowledge[i].children[j].value || NecessaryKnowledge[i].children[j].innerHTML;
+							knowText += "|";
+						}
+						knowText = knowText.slice(0, -1)
+						knowText += "+-+";
+					}
+
+					if(document.getElementById("textGOST").value != "" && !document.getElementById("textGOST").classList.contains("hide"))
+					{
+						gost = document.getElementById("textGOST").value
+					}
+
+					tempLevelArray = level.split("|");
+					tempSkilsArray = skilsText.split("+-+");
+					tempKnowArray = knowText.split("+-+");
+					tempNameArray = nameText.split("|");
+
+					skilsText = "";
+					knowText = "";
+					nameText = "";
+
+					for(var i = 0; i < tempLevelArray.length; i++)
+					{
+						if(Number(tempLevelArray[i]) == 3 || Number(tempLevelArray[i]) == 4)
+						{
+							skilsText += `${tempSkilsArray[i]}+-+`;
+							knowText += `${tempKnowArray[i]}+-+`;
+							nameText += `${tempNameArray[i]}|`;
+						}
+					}
+
+					if(jobText == "" || nameText == "" || skilsText == "" || knowText == "")
+					{
+						e.preventDefault();
+						alert("В данном файле нет некоторых данных.");
+						location.reload();
+					}
+
+					document.getElementById("text").value = `${jobText}0_0${nameText.slice(0, -1)}0_0${skilsText.slice(0, -3)}0_0${knowText.slice(0, -3)}0_0${gost}`
+
+
+					btn.classList.add("hide");
+				}
+				catch (error)
+				{
+					e.preventDefault();
+					alert("В данном файле нет некоторых данных.");
+					location.reload();
+				}
+
+			}
+			else
+			{
+				e.preventDefault();
+				alert("Какой ГОСТ будет использован?");
+				location.reload();
+			}
+		}
+
+	</script>
+</body>
+{% endblock %}
+</html>

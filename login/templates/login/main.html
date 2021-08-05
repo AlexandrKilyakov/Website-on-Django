@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/login/css/main.css">
+	<link rel="stylesheet" href="/static/login/css/style.css">
+	<title>Вход на сайт</title>
+</head>
+{% block content %}
+<body>
+	<div class="tool_bar">
+		<a href="" class="link_logo" id="main_logo"><img id="logo" src="/static/login/art/logo.png"></a>
+		<div class="category-wrap">
+			<ul>
+				<li><a href="" id="To_come_in" class="active">Войти</a></li>
+				<!-- <li><a href="" class="category-wrap_link">О нас</a></li> -->
+			</ul>
+		</div>
+	</div>
+
+	<div class="back">
+		<!-- Регистрация  email-section -->
+		<div class="registration-form" id="log_form">
+			<header>
+				<h1>Регистрация</h1>
+				<p>Введите свой email адрес.</p>
+			</header>
+
+			<form action="{% url 'login' %}" method="POST">
+				{% csrf_token %}
+				<div class="input-section">
+					{{ form.email }}
+					<button class="animated-button" type="submit"><img id="send-image" src="/static/login/art/send.png"></button>
+				</div>
+			</form>
+			<span>{{ error }}</span>
+		</div>
+
+		<div class="registration-form_admin hide" id="admin_form">
+			<header>
+				<h1>Вход для администратора</h1>
+				<p>Введите свои логин и пароль.</p>
+			</header>
+		
+			<form action="{% url 'login' %}" method="POST">
+				{% csrf_token %}
+				<div class="input-section wrap">
+					<input type="text" id="login-text" name="user_login" placeholder="Введите свой логин">
+					<input type="password" id="password-text" name="user_password" placeholder="Введите свой пароль">
+					<button type="submit" class="btn " id="backGOST">Войти</button>
+				</div>
+				
+			</form>
+			<span>{{ error }}</span>
+		</div>
+
+		<!-- О нас -->
+	</div>
+
+	<script>
+		document.getElementById("To_come_in").onclick = (e) => {
+			e.preventDefault();
+			document.getElementById("log_form").classList.remove("hide");
+			document.getElementById("admin_form").classList.add("hide");;
+		};
+		document.getElementById("main_logo").onclick = (e) => {
+			e.preventDefault();
+			document.getElementById("log_form").classList.add("hide");
+			document.getElementById("admin_form").classList.remove("hide");;
+		};
+	</script>
+    
+</body>
+{% endblock %}
+</html>

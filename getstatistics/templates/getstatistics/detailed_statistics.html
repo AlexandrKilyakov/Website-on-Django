@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/testing/test_style.css">
+{% block content %}
+	<title>{{name}}</title>
+</head>
+<body>
+		<div class="d1 padtop"><h3><span>Итоги по знаниям</span></h3></div>
+		<table class="table_dark">
+			<tr>
+				<th>Текст</th>
+				<th>1</th>
+				<th>2</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>Средняя оценка</th>
+			</tr>
+			{% for key, values in data_knows.items %}
+				<tr>
+					<td style="color: #fff;">{{values.name}}</td>
+					<td style="color: #fff;">{{values.one}}</td>
+					<td style="color: #fff;">{{values.two}}</td>
+					<td style="color: #fff;">{{values.three}}</td>
+					<td style="color: #fff;">{{values.for}}</td>
+					<td style="color: #fff;">{{values.five}}</td>
+					<td style="color: #fff;">{{values.average}}</td> <!--  = {{values.average}} / {{values.denominator}} -->
+				</tr>
+			{% endfor %}
+		</table>
+		
+		<div class="d1"><h3><span>Итоги по умениям</span></h3></div>
+		<table class="table_dark">
+			<tr>
+				<th>Текст</th>
+				<th>1</th>
+				<th>2</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>Средняя оценка</th>
+			</tr>
+			{% for key, values in data_skills.items %}
+				<tr>
+					<td style="color: #fff;">{{values.name}}</td>
+					<td style="color: #fff;">{{values.one}}</td>
+					<td style="color: #fff;">{{values.two}}</td>
+					<td style="color: #fff;">{{values.three}}</td>
+					<td style="color: #fff;">{{values.for}}</td>
+					<td style="color: #fff;">{{values.five}}</td>
+					<td style="color: #fff;">{{values.average}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	<form action="{% url 'statistics' %}" method="post">
+		{% csrf_token %}
+		<input type="text" id="text_knows" name="textTEST_knows" class="hide">
+		<input type="text" id="text_skills" name="textTEST_skills" class="hide">
+		<input name="job" type="text" value="{{job}}" class="hide">
+		<input name="gost" type="text" value="{{gost}}" class="hide">
+		<input name="afterText" type="text" value="{{start}}" class="hide">
+		<input name="beforeText" type="text" value="{{end}}" class="hide">
+		<button class="button" id="btn"><span>Закрыть</span></button>
+	</form>
+
+{% endblock %}
+</body>
+</html>

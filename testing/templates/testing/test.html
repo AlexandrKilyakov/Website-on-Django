@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/testing/test_style.css">
+{% block content %}
+	<title>{{name}}</title>
+</head>
+<body>
+		<div class="d1 padtop"><h3><span>Анкетирование по знаниям</span></h3></div>
+		<table class="table_dark">
+			<tr>
+				<th>Текст</th>
+				<th>Оценка</th>
+			</tr>
+			{% for el in data_knows %}
+				<tr>
+					<td>{{el.name}}</td>
+					<td>
+						<div class="rating-area">
+							<input type="radio" id="star-5{{el.id}}" name="rating" value="5" onchange="bufferAddToKnow({{el.id}},this.value);">
+							<label class="star-5{{el.id}}" for="star-5{{el.id}}" title="Оценка «5»"></label>	
+							<input type="radio" id="star-4{{el.id}}" name="rating" value="4" onchange="bufferAddToKnow({{el.id}},this.value);">
+							<label class="star-4{{el.id}}" for="star-4{{el.id}}" title="Оценка «4»"></label>    
+							<input type="radio" id="star-3{{el.id}}" name="rating" value="3" onchange="bufferAddToKnow({{el.id}},this.value);">
+							<label class="star-3{{el.id}}" for="star-3{{el.id}}" title="Оценка «3»"></label>  
+							<input type="radio" id="star-2{{el.id}}" name="rating" value="2" onchange="bufferAddToKnow({{el.id}},this.value);">
+							<label class="star-2{{el.id}}" for="star-2{{el.id}}" title="Оценка «2»"></label>    
+							<input type="radio" id="star-1{{el.id}}" name="rating" value="1" onchange="bufferAddToKnow({{el.id}},this.value);">
+							<label class="star-1{{el.id}}" for="star-1{{el.id}}" title="Оценка «1»"></label>
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		
+		<div class="d1"><h3><span>Анкетирование по умениям</span></h3></div>
+		<table class="table_dark">
+			<tr>
+				<th>Текст</th>
+				<th>Оценка</th>
+			</tr>
+			{% for el in data_skills %}
+				<tr>
+					<td>{{el.name}}</td>
+					<td>
+						<div class="rating-area_skills">
+							<input type="radio" id="skills_star-5{{el.id}}" name="rating" value="5" onchange="bufferAddToSkills({{el.id}},this.value);">
+							<label class="skills_star-5{{el.id}}" for="skills_star-5{{el.id}}" title="Оценка «5»"></label>	
+							<input type="radio" id="skills_star-4{{el.id}}" name="rating" value="4" onchange="bufferAddToSkills({{el.id}},this.value);">
+							<label class="skills_star-4{{el.id}}" for="skills_star-4{{el.id}}" title="Оценка «4»"></label>    
+							<input type="radio" id="skills_star-3{{el.id}}" name="rating" value="3" onchange="bufferAddToSkills({{el.id}},this.value);">
+							<label class="skills_star-3{{el.id}}" for="skills_star-3{{el.id}}" title="Оценка «3»"></label>  
+							<input type="radio" id="skills_star-2{{el.id}}" name="rating" value="2" onchange="bufferAddToSkills({{el.id}},this.value);">
+							<label class="skills_star-2{{el.id}}" for="skills_star-2{{el.id}}" title="Оценка «2»"></label>    
+							<input type="radio" id="skills_star-1{{el.id}}" name="rating" value="1" onchange="bufferAddToSkills({{el.id}},this.value);">
+							<label class="skills_star-1{{el.id}}" for="skills_star-1{{el.id}}" title="Оценка «1»"></label>
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+	<form action="{% url 'start' %}" method="post">
+		{% csrf_token %}
+		<input type="text" id="text_knows" name="textTEST_knows" class="hide">
+		<input type="text" id="text_skills" name="textTEST_skills" class="hide">
+		<input name="job" type="text" value="{{job}}" class="hide">
+		<input name="gost" type="text" value="{{gost}}" class="hide">
+		<button class="button" id="btn"><span>Закрыть</span></button>
+	</form>
+
+{% endblock %}
+<script>
+	var buffer_knows = new Map(); 
+	var buffer_skills = new Map();
+
+	function bufferAddToKnow(id, value)
+	{
+		buffer_knows.set(id, value);
+		document.querySelector("#text_knows").value = "";
+
+		for(var key of buffer_knows.keys())
+		{
+			document.querySelector("#text_knows").value += `${key}:${buffer_knows.get(key)}|`;
+		}
+
+		for(var i = value; i <= 5; i++)
+		{
+			document.querySelector(`.star-${i}${id}`).style.removeProperty("color");
+		}
+
+		for(var i = 1; i <= value; i++)
+		{
+			document.querySelector(`.star-${i}${id}`).style.cssText = "color: gold;";
+		}
+	}
+
+	function bufferAddToSkills(id, value)
+	{
+		buffer_skills.set(id, value);
+		document.querySelector("#text_skills").value = "";
+
+		for(var key of buffer_skills.keys())
+		{
+			document.querySelector("#text_skills").value += `${key}:${buffer_skills.get(key)}|`;
+		}
+
+		for(var i = value; i <= 5; i++)
+		{
+			document.querySelector(`.skills_star-${i}${id}`).style.removeProperty("color");
+		}
+
+		for(var i = 1; i <= value; i++)
+		{
+			document.querySelector(`.skills_star-${i}${id}`).style.cssText = "color: gold;";
+		}
+	}
+
+	document.getElementById("btn").onclick = function save(e)
+	{
+		if(Number(document.getElementsByClassName('rating-area_skills').length) != Number(buffer_skills.size) || Number(document.getElementsByClassName('rating-area').length) != Number(buffer_knows.size))
+		{
+			alert("Не все пункты были оценены.");
+			e.preventDefault();
+		}
+	}
+</script>
+</body>
+</html>

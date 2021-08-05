@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100&display=swap');
+
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+body 
+{
+	font-family: 'Roboto', sans-serif;
+	background-color: #16171B;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+span {font-size: 16px;}
+
+.table_dark 
+{
+	font-size: 16px;
+	width: 640px;
+	text-align: left;
+	border-collapse: collapse;
+	background: #202125;
+	margin: 20px 10px;
+	border-radius:  5px;
+}
+.table_dark th 
+{
+	color: #ffffff;
+	border-bottom: 1px solid #47484c;
+	padding: 12px 17px;
+}
+.table_dark td 
+{
+	color: #a2a3a7;
+	border-bottom: 1px solid #47484c;
+	border-right:1px solid #47484c;
+	padding: 7px 17px;
+}
+
+.table_dark tr:last-child td { border-bottom: none; }
+.table_dark td:last-child { border-right: none; }
+
+
+.button
+{
+	padding: 10px 50px;
+	margin-bottom: 100px;
+	background: #a6a7ab;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	transition: .1s background linear;
+
+	/*margin: -100px auto;*/
+}
+
+.button:hover
+{
+	background: #01b075;
+}
+
+.rating-area
+{
+	overflow: hidden;
+	width: 265px;
+	margin: 0 auto;
+}
+
+.rating-area_skills
+{
+	overflow: hidden;
+	width: 265px;
+	margin: 0 auto;
+}
+.rating-area:not(:checked) > input
+{
+	display: none;
+}
+.rating-area:not(:checked) > label 
+{
+	float: right;
+	width: 42px;
+	padding: 0;
+	cursor: pointer;
+	font-size: 32px;
+	line-height: 32px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-area:not(:checked) > label:before 
+{
+	content: '★';
+}
+.rating-area > input:checked ~ label 
+{
+	color: gold;
+	/*text-shadow: 1px 1px #c60;*/
+}
+.rating-area:not(:checked) > label:hover,
+.rating-area:not(:checked) > label:hover ~ label 
+{
+	color: gold;
+}
+.rating-area > input:checked + label:hover,
+.rating-area > input:checked + label:hover ~ label,
+.rating-area > input:checked ~ label:hover,
+.rating-area > input:checked ~ label:hover ~ label,
+.rating-area > label:hover ~ input:checked ~ label 
+{
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rate-area > label:active 
+{
+	position: relative;
+}
+
+.rating-area_skills:not(:checked) > input
+{
+	display: none;
+}
+.rating-area_skills:not(:checked) > label 
+{
+	float: right;
+	width: 42px;
+	padding: 0;
+	cursor: pointer;
+	font-size: 32px;
+	line-height: 32px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-area_skills:not(:checked) > label:before 
+{
+	content: '★';
+}
+.rating-area_skills > input:checked ~ label 
+{
+	color: gold;
+	/*text-shadow: 1px 1px #c60;*/
+}
+.rating-area_skills:not(:checked) > label:hover,
+.rating-area_skills:not(:checked) > label:hover ~ label 
+{
+	color: gold;
+}
+.rating-area_skills > input:checked + label:hover,
+.rating-area_skills > input:checked + label:hover ~ label,
+.rating-area_skills > input:checked ~ label:hover,
+.rating-area_skills > input:checked ~ label:hover ~ label,
+.rating-area_skills> label:hover ~ input:checked ~ label 
+{
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rating-area_skills > label:active 
+{
+	position: relative;
+}
+
+.hide 
+{
+	display: none;
+}
+
+form
+{
+	padding-top: 20px;
+}
+
+.d1 
+{
+	padding: 20px 50px;
+	border-bottom: 2px solid #ff4333; 
+	text-align: center;
+}
+.d1 h3
+{
+	font-family: 'Roboto', serif;
+	font-size: 18px;
+	letter-spacing: 1px;
+	max-width: 320px;
+	width: 100%;
+	position: relative;
+	display: inline-block;
+	color: #fff;
+}
+
+.d1 h3:before 
+{
+	content: "";
+	position: absolute;
+	top: calc(50% - 1px);
+	left: 0;
+	right: 0;
+	height: 2px;
+	/*background: #494a4e;*/
+	z-index: -1;
+}
+.d1 span 
+{
+	/*background: #1e1f23;*/
+	padding: 0 20px;
+}

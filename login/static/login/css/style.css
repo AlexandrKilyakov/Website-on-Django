@@ -1,0 +1,159 @@
+.registration-form 
+{
+	width: 400px;
+	position: absolute;
+	left: 60%;
+	top: 45%;
+	transform: translate(-60%, -45%);
+	font-weight: 300;
+  
+	background: transparent;
+}
+
+#login-text
+{
+	border-right: #57585D 2px solid;
+}
+
+#login-text, #password-text
+{
+	width: 169px;
+	height: 9px;
+}
+
+.registration-form_admin
+{
+	width: 500px;
+	position: absolute;
+	left: 60%;
+	top: 45%;
+	transform: translate(-60%, -45%);
+	font-weight: 300;
+  
+	background: transparent;
+}
+  
+header 
+{
+	position: relative;
+	z-index: 4;
+	background: #25262C;
+	padding: 20px 40px;
+	border-radius: 15px 15px 0 0;
+}
+
+h1 
+{
+	font-weight: 900;
+	letter-spacing: 1.5px;
+	color: #fcfcfe;
+	font-size: 23px;
+	text-transform: uppercase;
+	margin: 0;
+}
+  
+p 
+{
+	word-spacing: 0px;
+	color: #a2a3a7;
+	font-size: 17px;
+	margin: 0;
+	margin-top: 5px;
+}
+
+.input-section {
+	width: 100%;
+	position: absolute;
+	display: flex;
+	left: 50%;
+	transform: translate(-50%, 0);
+	/*height: $input-height;*/
+	border-radius: 0 0 15px 15px;
+	overflow: hidden;
+
+	z-index: 2;
+	/*box-shadow: 0px 0px 100px rgba(0,0,0,0.2);*/
+	/*transition: all 0.2s ease-in;*/
+}
+
+.wrap
+{
+	flex-wrap: wrap;
+}
+
+.hide {display: none}
+
+form 
+{
+	position: relative;
+}
+  
+input 
+{
+	background: #202125;
+	color: #d7d8da;
+	width: 80%;
+	border: 0;
+	padding: 20px 40px;
+	margin: 0;
+}
+
+input:focus
+{
+	outline: none;
+}
+
+input::placeholder
+{
+	color: #d7d8da
+	font-weight: 100;
+}
+
+.animated-button 
+{
+	width: 20%;
+	background-color: #D7DCE0;
+	border: none;
+	transition: .1s background-color linear;
+}
+
+.animated-button:hover
+{
+
+	background-color: #01b075;
+}
+
+span 
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	line-height: 75px;
+	text-align: center;
+	height: 75px;
+	transition: all 0.2s ease-in;
+}
+
+
+#send-image
+{
+	width: 75%;
+}
+
+.btn
+{
+	height: 40px;
+	width: 100%;
+	background: #4a4b4f;
+	color: #a1a2a6;
+	border:  none;
+	transition: .1s background linear;
+	font-weight: 400;
+}
+
+.btn:hover
+{
+	background: #01B075;
+	color: #FEFEFE;
+}
